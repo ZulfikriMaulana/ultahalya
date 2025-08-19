@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Alya ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Animasi Balon */
+        .balloon {
+            position: absolute;
+            bottom: -150px;
+            width: 80px;
+            height: 100px;
+            background: pink;
+            border-radius: 50% 50% 50% 50%;
+            animation: floatUp 10s infinite ease-in;
+            opacity: 0.8;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-120vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-red-100 font-sans relative overflow-x-hidden">
+
+    <!-- Balon -->
+    <div class="balloon bg-red-400 left-[10%]" style="animation-delay:0s;"></div>
+    <div class="balloon bg-pink-400 left-[30%]" style="animation-delay:2s;"></div>
+    <div class="balloon bg-yellow-300 left-[50%]" style="animation-delay:4s;"></div>
+    <div class="balloon bg-purple-400 left-[70%]" style="animation-delay:6s;"></div>
+
+    <!-- Hero Section -->
+    <section
+        class="h-screen flex flex-col justify-center items-center text-center bg-gradient-to-r from-red-400 to-pink-500 text-white relative z-10 px-4">
+        <h1 class="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 animate-bounce">Happy Birthday, Alya ❤️</h1>
+        <p class="text-base sm:text-lg md:text-2xl mb-8">Semoga hari spesialmu penuh kebahagiaan dan cinta 🎂✨</p>
+        <button onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})"
+            class="bg-white text-red-600 px-6 py-3 rounded-full shadow-lg hover:bg-pink-100 transition">Lihat Gallery
+            📸</button>
+
+        <!-- Musik -->
+        <audio id="bg-music" autoplay loop>
+            <source src="music.mp3" type="audio/mpeg">
+            Browser kamu tidak mendukung audio.
+        </audio>
+    </section>
+
+    <!-- Photo Gallery -->
+    <section id="gallery" class="py-12 bg-white">
+        <h2 class="text-2xl sm:text-3xl font-bold text-center text-red-600 mb-8">Photo Gallery 📸💕</h2>
+        <div id="galleryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 px-4 sm:px-6">
+        </div>
+    </section>
+
+    <!-- Modal Lightbox -->
+    <div id="lightboxModal" class="fixed inset-0 bg-black bg-opacity-90 hidden flex items-center justify-center z-50">
+        <!-- Close -->
+        <span class="absolute top-5 right-8 text-white text-4xl cursor-pointer" onclick="closeModal()">&times;</span>
+        <!-- Prev -->
+        <a class="absolute left-5 text-white text-4xl cursor-pointer select-none" onclick="changeSlide(-1)">&#10094;</a>
+        <!-- Image -->
+        <img id="lightboxImage" class="max-h-[90%] max-w-[90%] rounded-lg shadow-lg">
+        <!-- Next -->
+        <a class="absolute right-5 text-white text-4xl cursor-pointer select-none" onclick="changeSlide(1)">&#10095;</a>
+    </div>
+
+    <script>
+        const totalPhotos = 60; // jumlah foto
+        const galleryImages = [];
+        const galleryGrid = document.getElementById("galleryGrid");
+
+        // generate foto otomatis
+        for (let i = 1; i <= totalPhotos; i++) {
+            const imgPath = `img/photo${i}.jpg`; // pastikan foto bernama photo1.jpg ... photo60.jpg
+            galleryImages.push(imgPath);
+
+            const imgElement = document.createElement("img");
+            imgElement.src = imgPath;
+            imgElement.className = "rounded-lg shadow cursor-pointer hover:opacity-80 transition";
+            imgElement.onclick = () => openModal(i - 1);
+            galleryGrid.appendChild(imgElement);
+        }
+
+        let currentIndex = 0;
+
+        function openModal(index) {
+            currentIndex = index;
+            document.getElementById("lightboxModal").style.display = "flex";
+            document.getElementById("lightboxImage").src = galleryImages[currentIndex];
+        }
+
+        function closeModal() {
+            document.getElementById("lightboxModal").style.display = "none";
+        }
+
+        function changeSlide(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = galleryImages.length - 1;
+            if (currentIndex >= galleryImages.length) currentIndex = 0;
+            document.getElementById("lightboxImage").src = galleryImages[currentIndex];
+        }
+    </script>
+</body>
+
+</html>
